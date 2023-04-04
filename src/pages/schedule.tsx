@@ -1,11 +1,37 @@
 import { Button, Grid, Stack, Typography, Card, CardContent, Divider, Box } from "@mui/material";
 import { DateTime } from "luxon";
 
-type scheduleProps = {
-    schedule: Array<object>
+type scheduleType = {
+    RaceName: string;
+    "Circuit/CircuitName": string;
+    "Circuit/Location/Locality": string;
+    "Circuit/Location/Country": string;
+    "Circuit/Location/_lat": string;
+    "Circuit/Location/_long": string;
+    "Circuit/_circuitId": string;
+    "Circuit/_url": string;
+    Date: Date;
+    Time: string;
+    "FirstPractice/Date": Date;
+    "FirstPractice/Time": string;
+    "SecondPractice/Date": Date;
+    "SecondPractice/Time": string;
+    "ThirdPractice/Date": Date;
+    "ThirdPractice/Time": string;
+    "Qualifying/Date": Date;
+    "Qualifying/Time": string;
+    _season: string;
+    _round: string;
+    _url: string;
+    "Sprint/Date": string;
+    "Sprint/Time": string;
 }
 
-const CustomCard = ({ item }) => {
+type scheduleProps = {
+    schedule: Array<scheduleType>
+}
+
+const CustomCard = ({ item }: { item: scheduleType }) => {
     const fp1 = DateTime.fromISO(`${item["FirstPractice/Date"]}T${item["FirstPractice/Time"]}`).toLocaleString(DateTime.DATETIME_SHORT).toString();
     const fp2 = DateTime.fromISO(`${item["SecondPractice/Date"]}T${item["SecondPractice/Time"]}`).toLocaleString(DateTime.DATETIME_SHORT).toString();
     const fp3 = DateTime.fromISO(`${item["ThirdPractice/Date"]}T${item["ThirdPractice/Time"]}`).toLocaleString(DateTime.DATETIME_SHORT).toString();
@@ -56,7 +82,7 @@ export default function Schedule(props: scheduleProps) {
         <>
             <Grid container alignItems="center" justifyContent="center">
                 {
-                    schedule.map((item) => {
+                    schedule && schedule.map((item) => {
                         return (
                             <CustomCard item={item} key={item._round} />
                         )
