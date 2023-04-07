@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   repository: us-central1-docker.pkg.dev/shultzlab/docker-gcp/f1-calendar-web
   pullPolicy: Always
-  tag: "0.1.0"
+  tag: "0.1.1"
 
 imagePullSecrets: 
   - name: gcp-registry

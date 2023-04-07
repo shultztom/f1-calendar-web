@@ -8,7 +8,7 @@ import axios from "axios";
 import Schedule from './schedule';
 
 export default function Home() {
-  const BASE_URL = 'https://f1-schedule-api-kekredzema-uc.a.run.app'
+  const BASE_URL = 'https://f1-schedule-api.shultzlab.com'
 
   const [schedule, setSchedule] = useState([]);
   const [isLoadingSchedule, setLoadingSchedule] = useState(true);
