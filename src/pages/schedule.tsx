@@ -90,7 +90,8 @@ export default function Schedule(props: scheduleProps) {
         // Get first one that isn't negative, that is this race weekend
         for (let item of sched) {
             const race = DateTime.fromISO(`${item["Date"]}T${item["Time"]}`);
-            const diff = race.diffNow('minutes');
+            const racePlusBuffer = race.plus({hours: 6}); // In case you check mid-race, race shouldn't be more than 6 hours
+            const diff = racePlusBuffer.diffNow('minutes');
             const diffInMinutes = diff.minutes;
             if (diffInMinutes > 0) {
                 return item;
