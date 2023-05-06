@@ -1,5 +1,8 @@
 import { Button, Grid, Stack, Typography, Card, CardContent, Divider, Box } from "@mui/material";
+import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 type scheduleType = {
     RaceName: string;
@@ -40,10 +43,13 @@ const CustomCard = ({ item }: { item: scheduleType }) => {
     const race = DateTime.fromISO(`${item["Date"]}T${item["Time"]}`).toLocaleString(DateTime.DATETIME_SHORT).toString();
 
     return (
+
         <Box width="90%" marginTop={1} marginBottom={1}>
-            <Card>
+            <Card id={item._round}>
                 <CardContent>
-                    <Typography variant="h4">{item["RaceName"]}</Typography>
+                    <Link href={`#${item._round}`} style={{ textDecoration: 'none' }}>
+                        <Typography variant="h4">{item["RaceName"]}</Typography>
+                    </Link>
                     <Typography variant="h6">{item["Circuit/CircuitName"]}</Typography>
                 </CardContent>
 
@@ -77,6 +83,26 @@ const CustomCard = ({ item }: { item: scheduleType }) => {
 
 export default function Schedule(props: scheduleProps) {
     const { schedule } = props;
+    const router = useRouter();
+
+    const getClosestRaceWeekend = (sched: Array<scheduleType>) => {
+        // Get diff
+        // Get first one that isn't negative, that is this race weekend
+        for (let item of sched) {
+            const race = DateTime.fromISO(`${item["Date"]}T${item["Time"]}`);
+            const diff = race.diffNow('minutes');
+            const diffInMinutes = diff.minutes;
+            if (diffInMinutes > 0) {
+                return item;
+            }
+        }
+    }
+
+    useEffect(() => {
+        const closestWeekend = getClosestRaceWeekend(schedule);
+        router.push(`#${closestWeekend?._round}`).catch(err => console.error(err.message)); // TODO look into error here
+        
+    }, [schedule]);
 
     return (
         <>
